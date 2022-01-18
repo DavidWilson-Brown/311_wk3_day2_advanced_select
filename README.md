@@ -29,64 +29,48 @@ We are going to run a couple SQL queries and put the answers in the "Query Respo
 
 1. Get a sum of all the user_ids from the `usersAddress` table grouped by state. Enter the values for the specific states below.
 
-    SELECT 
-      usersAddress.state, 
-    
-    SUM
-      (usersAddress.user_id), count(*)
-    
-    FROM 
-      usersAddress 
-    
-    GROUP BY 
-      state;
+   SELECT 
+     sum(user_id),
+     state 
+   FROM 
+     usersAddress
+   GROUP BY state;
 
 2. Find the most popular area code in the `usersContact` table. 
   * Hint: SUBSTR, GROUP BY
 
-  SELECT 
-    count(*), 
-    
-  SUBSTR
-    (usersContact.phone1,1,3) 
-    
-  AS 
-    AreaCode 
-    
-  FROM 
-    usersContact 
-    
-  GROUP BY 
-    AreaCode;
+SELECT 
+  substr(phone1, 1, 3)
+AS 
+  areaCode, 
+count(*)
+AS 
+  total
+FROM 
+  usersContact
+GROUP BY 
+  substr(phone1, 1, 3);
 
 3. Find the MIN first_name, the county, and a count of all users in that county for counties with more than 10 users. There will be four results. List the last one. 
   * Hint: MIN, COUNT, JOIN, GROUP BY, HAVING
 
-  SELECT 
-    MIN(users.first_name),
-    usersAddress.county,
-    count(*) 
-    
-  AS
-    totalUsers
-
-  FROM
-    users
-
-  JOIN
-    usersAddress
-
-  WHERE
-    users.id
-
-  LIKE
-    usersAddress.user_id
-
-  GROUP BY
-    county
-
-  HAVING
-    totalUsers > 10;
+SELECT
+  min(users.first_name), usersAddress.county,
+  COUNT (*) 
+  AS totalUsers
+FROM
+  users
+JOIN 
+  usersAddress
+WHERE
+  users.id = usersAddress.user_id
+GROUP BY
+  county
+HAVING
+ totalUsers > 10;
+-- ORDER
+-- LIMIT BY
+-- OFFSET
 
 
 ## Query Responses
